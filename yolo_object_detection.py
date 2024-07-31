@@ -8,15 +8,20 @@ net = cv.dnn.readNet("D:\OPEN CV\YOLOV object detection\yolov3.weights",
 clasees = []
 with open("coco.names", 'r') as f:
     classes = [line.strip() for line in f.readlines()]
+
+
 # print(classes)
 layer_name = net.getLayerNames()
 output_layer = [layer_name[i - 1] for i in net.getUnconnectedOutLayers()]
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
+
 # Load Image
 img = cv.imread("D:/OPEN CV/YOLOV object detection/room_ser.jpg")
 img = cv.resize(img, None, fx=0.4, fy=0.4)
 height, width, channel = img.shape
+
+
 
 # Detect Objects
 blob = cv.dnn.blobFromImage(
@@ -24,6 +29,8 @@ blob = cv.dnn.blobFromImage(
 net.setInput(blob)
 outs = net.forward(output_layer)
 # print(outs)
+
+
 
 # Showing Information on the screen
 class_ids = []
@@ -48,9 +55,10 @@ for out in outs:
             confidences.append(float(confidence))
             class_ids.append(class_id)
 
+
+
 # print(len(boxes))
 # number_object_detection = len(boxes)
-
 indexes = cv.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
 print(indexes)
 
